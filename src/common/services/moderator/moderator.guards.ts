@@ -5,7 +5,7 @@ import { moderatorService } from "./moderator";
 // runtime keys must be valid
 bus.guard(moderatorService.actions.request.match, ({ payload }) => {
   Object.keys(payload).forEach((k) => {
-    if (!["talking", "queued"].includes(k)) {
+    if (!["talking", "queued", "subtype"].includes(k)) {
       throw new Error(`${k} is not a valid key`);
     }
   });
