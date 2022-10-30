@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@rxfx/bus": "^1.0.2",
+    "@rxfx/react": "^0.9.9",
     "@rxfx/service": "^1.0.6",
     "axios": "^0.26.1",
     "fastify": "^3.28.0",

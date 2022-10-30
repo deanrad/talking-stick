@@ -6,7 +6,7 @@ export type TRequest = Partial<ModeratorState> &
 export type TNext = ModeratorState;
 
 export const initialState: ModeratorState = {
-  talking: "",
+  talking: "A",
   queued: "",
 };
 

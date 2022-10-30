@@ -1,5 +1,8 @@
 import * as React from "react";
 import { ButtonProps, Buttons } from "./Buttons";
+import { useService } from "@rxfx/react";
+import { moderatorService } from "/src/common/services/moderator";
+
 export interface TalkerProps {
   talkerId: string;
 }
@@ -7,7 +10,7 @@ export interface TalkerProps {
 function stateViewedByTalker(
   state: ModeratorState,
   talkerId: string
-): ButtonProps {
+): Pick<ButtonProps, "isTalking" | "isQueued"> {
   return {
     isTalking: state.talking === talkerId,
     isQueued: state.queued === talkerId,
@@ -15,15 +18,19 @@ function stateViewedByTalker(
 }
 
 export function Talker(props: TalkerProps) {
-  // simulate state for now
-  const state = { talking: "", queued: "B" } as ModeratorState;
+  const { state, request } = useService(moderatorService);
   const activity = stateViewedByTalker(state, props.talkerId);
+
+  const handlers: Pick<ButtonProps, "requestTalk" | "requestQueue"> = {
+    requestTalk: () => request({ subtype: "update", talking: props.talkerId }),
+    requestQueue: () => request({ subtype: "update", queued: props.talkerId }),
+  };
 
   return (
     <div className="screen">
       <section>
         <summary>{props.talkerId}</summary>
-        <Buttons {...activity} />
+        <Buttons {...activity} {...handlers} />
       </section>
     </div>
   );
