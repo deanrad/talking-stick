@@ -1,5 +1,6 @@
 import { Action } from "typescript-fsa";
 import { ActionCreators, HasSubtype } from "@rxfx/service";
+import { ModeratorState } from "../../types";
 
 export type TRequest = Partial<ModeratorState> &
   HasSubtype<"update" | "pass-the-stick">;
@@ -7,7 +8,7 @@ export type TNext = ModeratorState;
 
 export const initialState: ModeratorState = {
   talking: "A",
-  queued: "",
+  queued: "B",
 };
 
 export const reducerProducer =
