@@ -13,20 +13,22 @@ bus.guard(moderatorService.actions.request.match, ({ payload }) => {
 
 // cant talk over another
 bus.guard(moderatorService.actions.request.match, ({ payload: request }) => {
-  if (request) {
-    if (moderatorService.state.value.talking && request.talking) {
-      throw new Error(
-        "cant steal the stalking stick - you must be in the queue first."
-      );
-    }
+  if (request.subtype !== "update") return;
+
+  const state = moderatorService.state.value;
+  if (state.talking && request.talking !== state.queued) {
+    console.log(state, request);
+    throw new Error(
+      "cant steal the talking stick - you must be in the queue first."
+    );
   }
 });
 
-// cant be queued if you're already talking
+// // cant be queued if you're already talking
 bus.guard(moderatorService.actions.request.match, ({ payload: request }) => {
-  if (request) {
-    if (moderatorService.state.value.talking === request.queued) {
-      throw new Error("cant queue - you're already talking");
-    }
+  if (request.subtype !== "update") return;
+
+  if (moderatorService.state.value.talking === request.queued) {
+    throw new Error("cant queue - you're already talking");
   }
 });

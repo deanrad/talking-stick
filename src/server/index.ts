@@ -1,4 +1,6 @@
+import { Subscription } from "rxjs";
 import { Server } from "socket.io";
+import { moderatorService } from "../common/services/moderator";
 import { initialState } from "../common/services/moderator/moderator.reducer";
 import { ClientToServerEvents, ServerToClientEvents } from "../common/types";
 
@@ -20,13 +22,29 @@ app.get("/", (req, res) => {
   res.json({ msg: "hi" });
 });
 
+moderatorService.state.subscribe(console.log);
+
 io.on("connection", (client) => {
   const clientId = client.id.substr(0, 6);
   console.log(`${clientId}: Got a client connection!`);
+
+  // hold anything we should cancel on unmount
+  const clientSubs = new Subscription();
+  clientSubs.add(
+    moderatorService.state.subscribe((newState) => {
+      client.emit("update", newState);
+    })
+  );
+
   client.on("pass-the-stick", () => {
-    console.log(`TODO allow ${clientId} to pass the stick.`);
+    moderatorService.request({ subtype: "pass-the-stick" });
   });
-  client.emit("update", initialState);
+
+  client.on("disconnect", () => {
+    clientSubs.unsubscribe();
+  });
+
+  client.emit("update", moderatorService.state.value);
 });
 
 server.listen(8470, () => {

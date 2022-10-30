@@ -16,7 +16,8 @@ export const reducerProducer =
     if (!e) return state;
 
     if (EVENTS.request.match(e)) {
-      if (e.payload.subtype === "pass-the-stick") {
+      const { subtype, ...updateFields } = e.payload;
+      if (subtype === "pass-the-stick") {
         return {
           talking: state.queued,
           queued: null,
@@ -25,7 +26,7 @@ export const reducerProducer =
 
       return {
         ...state,
-        ...e.payload,
+        ...updateFields,
       };
     }
 

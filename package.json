@@ -52,6 +52,7 @@
     "fastify-socket.io": "^4.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "rxjs": "^7.5.7",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
     "typescript-fsa": "^3.0.0",

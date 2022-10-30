@@ -1,6 +1,7 @@
 import { createService } from "@rxfx/service";
 import { bus } from "../../bus";
 import { reducerProducer, TRequest, TNext } from "./moderator.reducer";
+import { ModeratorState } from "../../types";
 
 // prettier-ignore
 export const moderatorService = createService<TRequest, TNext, Error, ModeratorState>(
@@ -11,4 +12,4 @@ export const moderatorService = createService<TRequest, TNext, Error, ModeratorS
   reducerProducer
 )
 
-Object.assign(window, { moderatorService });
+typeof window !== "undefined" && Object.assign(window, { moderatorService });

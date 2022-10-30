@@ -3,7 +3,7 @@ export interface ModeratorState {
   queued: string;
 }
 
-export type RequestSubtype = "update" | "pass-the-stick";
+export type RequestSubtype = "update" | "pass-the-stick" | "server-update";
 
 export interface ServerToClientEvents {
   update: (newState: ModeratorState) => void;

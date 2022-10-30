@@ -12,7 +12,13 @@ let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 export default function App() {
   useWhileMounted(() => {
     socket = io("ws://localhost:8470/", { timeout: 100 });
-    socket.on("update", (newState) => console.info("New State: ", newState));
+    socket.on("update", (newState) => {
+      try {
+        moderatorService.request({ subtype: "server-update", ...newState });
+      } catch (e) {
+        console.error(e);
+      }
+    });
     socket.connect();
 
     return () => {
