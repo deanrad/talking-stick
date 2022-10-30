@@ -11,8 +11,9 @@ export const initialState: ModeratorState = {
 
 export const reducerProducer =
   (EVENTS: ActionCreators<TRequest, TNext, Error>) =>
-  (state: ModeratorState, e?: Action<any>) => {
+  (state: ModeratorState = initialState, e?: Action<any>) => {
     if (!e) return state;
+
     if (EVENTS.request.match(e)) {
       return {
         ...state,
