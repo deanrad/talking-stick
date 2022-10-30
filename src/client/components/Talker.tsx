@@ -21,16 +21,11 @@ export function Talker(props: TalkerProps) {
   const { state, request } = useService(moderatorService);
   const activity = stateViewedByTalker(state, props.talkerId);
 
-  const handlers: Pick<ButtonProps, "requestTalk" | "requestQueue"> = {
-    requestTalk: () => request({ subtype: "update", talking: props.talkerId }),
-    requestQueue: () => request({ subtype: "update", queued: props.talkerId }),
-  };
-
   return (
     <div className="screen">
       <section>
         <summary>{props.talkerId}</summary>
-        <Buttons {...activity} {...handlers} />
+        <Buttons {...activity} talkerId={props.talkerId} />
       </section>
     </div>
   );

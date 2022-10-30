@@ -1,14 +1,20 @@
 import * as React from "react";
+import { useService } from "@rxfx/react";
+import { moderatorService } from "/src/common/services/moderator";
 
 export interface ButtonProps {
   isTalking: boolean;
   isQueued: boolean;
-  requestTalk: () => void;
-  requestQueue: () => void;
+  talkerId: string;
 }
 
 export function Buttons(props: ButtonProps) {
-  const { isTalking, isQueued, requestTalk, requestQueue } = props;
+  const { isTalking, isQueued, talkerId } = props;
+  const { request } = useService(moderatorService);
+
+  const requestTalk = () => request({ subtype: "update", talking: talkerId });
+  const requestQueue = () => request({ subtype: "update", queued: talkerId });
+
   return (
     <>
       <button
