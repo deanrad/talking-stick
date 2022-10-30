@@ -12,7 +12,13 @@ export function Buttons(props: ButtonProps) {
   const { isTalking, isQueued, talkerId } = props;
   const { request } = useService(moderatorService);
 
-  const requestTalk = () => request({ subtype: "update", talking: talkerId });
+  const requestTalk = () => {
+    if (isTalking) {
+      return request({ subtype: "pass-the-stick" });
+    }
+    request({ subtype: "update", talking: talkerId });
+  };
+
   const requestQueue = () => request({ subtype: "update", queued: talkerId });
 
   return (
