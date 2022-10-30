@@ -11,15 +11,17 @@ export interface TalkerProps {
 function stateViewedByTalker(
   state: ModeratorState,
   talkerId: string
-): Pick<ButtonProps, "isTalking" | "isQueued"> {
+): Pick<ButtonProps, "isTalking" | "isQueued" | "mayTalk" | "mayQueue"> {
   return {
     isTalking: state.talking === talkerId,
     isQueued: state.queued === talkerId,
+    mayTalk: !state.talking || state.talking === talkerId,
+    mayQueue: !state.queued,
   };
 }
 
 export function Talker(props: TalkerProps) {
-  const { state, request } = useService(moderatorService);
+  const { state } = useService(moderatorService);
   const activity = stateViewedByTalker(state, props.talkerId);
 
   return (

@@ -6,10 +6,12 @@ export interface ButtonProps {
   isTalking: boolean;
   isQueued: boolean;
   talkerId: string;
+  mayTalk: boolean;
+  mayQueue: boolean;
 }
 
 export function Buttons(props: ButtonProps) {
-  const { isTalking, isQueued, talkerId } = props;
+  const { isTalking, isQueued, mayTalk, mayQueue, talkerId } = props;
   const { request } = useService(moderatorService);
 
   const requestTalk = () => {
@@ -26,12 +28,14 @@ export function Buttons(props: ButtonProps) {
       <button
         className={`btn-talking ${isTalking ? "active" : ""}`}
         onClick={requestTalk}
+        disabled={!mayTalk}
       >
         🎙
       </button>
       <button
         className={`btn-queued ${isQueued ? "active" : ""}`}
         onClick={requestQueue}
+        disabled={!mayQueue}
       >
         ⏰
       </button>
