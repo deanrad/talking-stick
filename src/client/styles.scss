@@ -1,6 +1,9 @@
 .screen {
   margin-top: 1rem;
   button {
+    &.active {
+      background-color: black;
+    }
     font-size: 2rem;
   }
 }
