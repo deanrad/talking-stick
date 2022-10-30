@@ -15,7 +15,18 @@ bus.guard(moderatorService.actions.request.match, ({ payload }) => {
 bus.guard(moderatorService.actions.request.match, ({ payload: request }) => {
   if (request) {
     if (moderatorService.state.value.talking && request.talking) {
-      throw new Error("cant steal the stalking stick");
+      throw new Error(
+        "cant steal the stalking stick - you must be in the queue first."
+      );
+    }
+  }
+});
+
+// cant be queued if you're already talking
+bus.guard(moderatorService.actions.request.match, ({ payload: request }) => {
+  if (request) {
+    if (moderatorService.state.value.talking === request.queued) {
+      throw new Error("cant queue - you're already talking");
     }
   }
 });
