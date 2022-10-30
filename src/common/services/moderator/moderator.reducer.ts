@@ -6,8 +6,8 @@ export type TRequest = Partial<ModeratorState> & HasSubtype<RequestSubtype>;
 export type TNext = ModeratorState;
 
 export const initialState: ModeratorState = {
-  talking: "A",
-  queued: "B",
+  talking: "",
+  queued: "",
 };
 
 export const reducerProducer =

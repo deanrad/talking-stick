@@ -46,6 +46,7 @@ io.on("connection", (client) => {
     clientSubs.unsubscribe();
   });
 
+  client.emit("identify", clientId);
   client.emit("update", moderatorService.state.value);
 });
 

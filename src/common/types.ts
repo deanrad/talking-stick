@@ -6,6 +6,7 @@ export interface ModeratorState {
 export type RequestSubtype = "update" | "pass-the-stick" | "server-update";
 
 export interface ServerToClientEvents {
+  identify: (clientId: string) => void;
   update: (newState: ModeratorState) => void;
 }
 

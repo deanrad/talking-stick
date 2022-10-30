@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useWhileMounted } from "@rxfx/react";
 import { io, Socket } from "socket.io-client";
 import { ServerToClientEvents, ClientToServerEvents } from "../common/types";
@@ -22,6 +22,8 @@ const forwardEvent = ({ payload }: { payload: TRequest }) => {
 };
 
 export default function App() {
+  const [clientId, setClientId] = useState("");
+
   useWhileMounted(() => {
     socket = io("ws://localhost:8470/", { timeout: 100 });
     socket.on("update", (newState) => {
@@ -31,6 +33,7 @@ export default function App() {
         console.error(e);
       }
     });
+    socket.on("identify", setClientId);
     socket.connect();
 
     const forwarder = bus
@@ -43,12 +46,11 @@ export default function App() {
       forwarder.unsubscribe();
     };
   });
-  
+
   return (
     <>
       <h1>Talking Stick</h1>
-      <Talker talkerId="A" />
-      <Talker talkerId="B" />
+      <Talker talkerId={clientId} />
     </>
   );
 }
