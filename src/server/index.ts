@@ -23,10 +23,10 @@ app.get("/", (req, res) => {
 io.on("connection", (client) => {
   const clientId = client.id.substr(0, 6);
   console.log(`${clientId}: Got a client connection!`);
-  client.emit("update", initialState);
   client.on("pass-the-stick", () => {
-    `TODO allow ${clientId} to pass the stick.`;
+    console.log(`TODO allow ${clientId} to pass the stick.`);
   });
+  client.emit("update", initialState);
 });
 
 server.listen(8470, () => {
