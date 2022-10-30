@@ -16,7 +16,7 @@ bus.guard(moderatorService.actions.request.match, ({ payload: request }) => {
   if (request.subtype !== "update") return;
 
   const state = moderatorService.state.value;
-  if (state.talking && request.talking !== state.queued) {
+  if (state.talking && request.talking && request.talking !== state.queued) {
     console.log(state, request);
     throw new Error(
       "cant steal the talking stick - you must be in the queue first."

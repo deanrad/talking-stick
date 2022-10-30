@@ -4,10 +4,22 @@ import { io, Socket } from "socket.io-client";
 import { ServerToClientEvents, ClientToServerEvents } from "../common/types";
 import { Talker } from "./components/Talker";
 import { moderatorService } from "../common/services/moderator";
+import { bus } from "../common/bus";
+import { TRequest } from "../common/services/moderator/moderator.reducer";
 
 moderatorService.state.subscribe(console.info);
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+
+const forwardEvent = ({ payload }: { payload: TRequest }) => {
+  const { subtype, ...updateFields } = payload;
+  if (subtype === "pass-the-stick") {
+    socket.timeout(200).emit("pass-the-stick");
+  }
+  if (subtype === "update") {
+    socket.timeout(200).emit("update", updateFields);
+  }
+};
 
 export default function App() {
   useWhileMounted(() => {
@@ -21,16 +33,20 @@ export default function App() {
     });
     socket.connect();
 
+    const forwarder = bus
+      .query(moderatorService.actions.request.match)
+      .subscribe(forwardEvent);
+
     return () => {
       socket.close();
       console.log("Socket closed!");
+      forwarder.unsubscribe();
     };
   });
+  
   return (
     <>
-      <h1 onClick={() => socket.timeout(200).emit("pass-the-stick")}>
-        Talking Stick
-      </h1>
+      <h1>Talking Stick</h1>
       <Talker talkerId="A" />
       <Talker talkerId="B" />
     </>

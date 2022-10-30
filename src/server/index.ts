@@ -1,7 +1,6 @@
 import { Subscription } from "rxjs";
 import { Server } from "socket.io";
 import { moderatorService } from "../common/services/moderator";
-import { initialState } from "../common/services/moderator/moderator.reducer";
 import { ClientToServerEvents, ServerToClientEvents } from "../common/types";
 
 const express = require("express");
@@ -38,6 +37,9 @@ io.on("connection", (client) => {
 
   client.on("pass-the-stick", () => {
     moderatorService.request({ subtype: "pass-the-stick" });
+  });
+  client.on("update", (updateFields) => {
+    moderatorService.request({ subtype: "update", ...updateFields });
   });
 
   client.on("disconnect", () => {
