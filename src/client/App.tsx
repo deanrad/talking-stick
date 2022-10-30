@@ -1,12 +1,13 @@
 import React from "react";
-import axios from "axios";
+import { randomId } from "/src/common/utils";
+import { Talker } from "./components/Talker";
 
 export default function App() {
-  const [name, setName] = React.useState("loading");
-  React.useEffect(() => {
-    axios.get("/api/parcel").then((res) => {
-      setName(res.data as string);
-    });
-  }, []);
-  return <div>Hi, {name}!</div>;
+  return (
+    <>
+      <h1>Talking Stick</h1>
+      <Talker memberId={randomId()} />
+      <Talker memberId={randomId()} />
+    </>
+  );
 }
