@@ -2,6 +2,7 @@ import * as React from "react";
 import { ButtonProps, Buttons } from "./Buttons";
 import { useService } from "@rxfx/react";
 import { moderatorService } from "/src/common/services/moderator";
+import { ModeratorState } from "/src/common/types";
 
 export interface TalkerProps {
   talkerId: string;

@@ -1,7 +1,6 @@
 import { Server } from "socket.io";
 import { initialState } from "../common/services/moderator/moderator.reducer";
 import { ClientToServerEvents, ServerToClientEvents } from "../common/types";
-import { initialState } from "../common/services/moderator/moderator.reducer";
 
 const express = require("express");
 const app = express();
@@ -25,7 +24,9 @@ io.on("connection", (client) => {
   const clientId = client.id.substr(0, 6);
   console.log(`${clientId}: Got a client connection!`);
   client.emit("update", initialState);
-  // io.sockets.emit(`say hi to ${clientId}`, "everyone");
+  client.on("pass-the-stick", () => {
+    `TODO allow ${clientId} to pass the stick.`;
+  });
 });
 
 server.listen(8470, () => {

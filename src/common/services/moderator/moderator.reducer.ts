@@ -1,9 +1,8 @@
 import { Action } from "typescript-fsa";
 import { ActionCreators, HasSubtype } from "@rxfx/service";
-import { ModeratorState } from "../../types";
+import { ModeratorState, RequestSubtype } from "../../types";
 
-export type TRequest = Partial<ModeratorState> &
-  HasSubtype<"update" | "pass-the-stick">;
+export type TRequest = Partial<ModeratorState> & HasSubtype<RequestSubtype>;
 export type TNext = ModeratorState;
 
 export const initialState: ModeratorState = {
@@ -17,18 +16,17 @@ export const reducerProducer =
     if (!e) return state;
 
     if (EVENTS.request.match(e)) {
-      if (e.payload.subtype !== "pass-the-stick")
-        return {
-          ...state,
-          ...e.payload,
-        };
-
       if (e.payload.subtype === "pass-the-stick") {
         return {
           talking: state.queued,
           queued: null,
         };
       }
+
+      return {
+        ...state,
+        ...e.payload,
+      };
     }
 
     return state;
