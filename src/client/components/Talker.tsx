@@ -3,6 +3,7 @@ import * as React from "react";
 export interface TalkerProps {
   memberId: string;
 }
+
 export function Talker(props: TalkerProps) {
   return (
     <div className="screen">
