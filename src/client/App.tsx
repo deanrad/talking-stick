@@ -1,10 +1,26 @@
 import React from "react";
-import { randomId } from "/src/common/utils";
+import { useWhileMounted } from "@rxfx/react";
+import { io, Socket } from "socket.io-client";
+import { ServerToClientEvents, ClientToServerEvents } from "../common/types";
 import { Talker } from "./components/Talker";
 import { moderatorService } from "../common/services/moderator";
+
 moderatorService.state.subscribe(console.info);
 
 export default function App() {
+  useWhileMounted(() => {
+    const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+      "ws://localhost:8470/",
+      { timeout: 100 }
+    );
+    socket.on("update", (newState) => console.info("New State: ", newState));
+    socket.connect();
+
+    return () => {
+      socket.close();
+      console.log("Socket closed!");
+    };
+  });
   return (
     <>
       <h1>Talking Stick</h1>
