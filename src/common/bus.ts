@@ -1,4 +1,6 @@
-import { Bus } from '@rxfx/bus'
-import { Action } from 'typescript-fsa'
+import { Bus } from "@rxfx/bus";
+import { Action } from "typescript-fsa";
 
-export const bus  = new Bus<Action<any>>;
+export const bus = new Bus<Action<any>>();
+bus.spy(console.log);
+bus.errors.subscribe(console.error);
